@@ -1,5 +1,5 @@
-import { useGetAllProductsQuery } from "../../../feature/product/productApiSlice";
-import ProductCard from "../../Cards/ProductCard";
+import { useGetAllProductsQuery } from "../../../../feature/product/productApiSlice";
+import ProductCard from "../../../Cards/ProductCard";
 
 const AllProducts = () => {
   const { data, isLoading } = useGetAllProductsQuery({});

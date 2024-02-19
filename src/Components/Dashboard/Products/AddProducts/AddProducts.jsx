@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import ToggleButton from "../../Shared/ToggleButton";
+import ToggleButton from "../../../Shared/ToggleButton";
 import {
   useAddProductMutation,
   useGetSingleProductQuery,
   useUpdateProductMutation,
-} from "../../../feature/product/productApiSlice";
-import Modal from "../../Shared/Modal";
+} from "../../../../feature/product/productApiSlice";
+import Modal from "../../../Shared/Modal";
 import { useParams } from "react-router-dom";
 
 import { FaCheckCircle } from "react-icons/fa";

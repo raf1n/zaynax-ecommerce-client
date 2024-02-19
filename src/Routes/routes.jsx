@@ -3,8 +3,11 @@ import Main from "../Layout/Main/Main";
 import AdminLogin from "../Pages/Login/AdminLogin";
 import Dashboard from "../Layout/Dashboard/Dashboard";
 import AdminRoute from "./AdminRoute/AdminRoute";
-import AddProducts from "../Components/Dashboard/Products/AddProducts";
+import AddProducts from "../Components/Dashboard/Products/AddProducts/AddProducts";
 import Products from "../Components/Dashboard/Products/Products";
+import AddPromoCodes from "../Components/Dashboard/Promotions/AddPromoCodes/AddPromoCodes";
+import Promotions from "../Components/Dashboard/Promotions/Promotions";
+import Orders from "../Components/Dashboard/Orders/Orders";
 
 export const router = createBrowserRouter([
   {
@@ -32,7 +35,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/dashboard/orders",
-        element: <div>Orders</div>,
+        element: <Orders />,
       },
       {
         path: "/dashboard/products",
@@ -48,11 +51,15 @@ export const router = createBrowserRouter([
       },
       {
         path: "/dashboard/promotion/codes",
-        element: <div>Promo Codes</div>,
+        element: <Promotions />,
       },
       {
         path: "/dashboard/promotion/add",
-        element: <div>Add Promo</div>,
+        element: <AddPromoCodes />,
+      },
+      {
+        path: "/dashboard/promotion/update/:id",
+        element: <AddPromoCodes />,
       },
     ],
   },
