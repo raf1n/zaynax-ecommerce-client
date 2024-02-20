@@ -11,7 +11,7 @@ const AdminLogin = () => {
   } = useForm();
   const navigate = useNavigate();
 
-  const [adminLogin] = useAdminUserLoginMutation({});
+  const [adminLogin, { isLoading }] = useAdminUserLoginMutation({});
 
   const onSubmit = async (data) => {
     const result = await adminLogin({ bodyData: data });
@@ -62,8 +62,11 @@ const AdminLogin = () => {
                   </div>
                 </div>
                 <div className="pt-4 flex items-center space-x-4">
-                  <button className="bg-primary font-medium  flex justify-center items-center w-full text-black px-4 py-3 mx-16  rounded-3xl focus:outline-none">
+                  <button className="bg-primary font-medium  flex justify-center items-center w-full text-black px-4 gap-1 py-3 mx-16  rounded-3xl focus:outline-none">
                     Sign in
+                    {isLoading && (
+                      <div className=" w-6 h-6 border-4 border-white border-dashed rounded-full animate-spin "></div>
+                    )}
                   </button>
                 </div>
               </form>

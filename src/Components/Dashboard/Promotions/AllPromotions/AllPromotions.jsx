@@ -6,7 +6,10 @@ const AllPromotions = () => {
 
   console.log(data);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div className=" w-10 mx-auto h-10 border-4 border-primary border-dashed rounded-full animate-spin "></div>
+    );
 
   return (
     <div>

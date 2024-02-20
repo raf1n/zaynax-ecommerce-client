@@ -69,7 +69,7 @@ const ProductCard = ({ product }) => {
             </div>
             <button
               onClick={handleAddToCart}
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-primary text-black opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex justify-center items-center rounded-full py-2 px-4"
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-primary text-black opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex justify-center items-center rounded-full py-2 px-4 font-medium"
             >
               Add to Cart
             </button>

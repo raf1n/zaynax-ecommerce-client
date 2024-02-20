@@ -1,7 +1,10 @@
-// eslint-disable-next-line react/prop-types
-export default function Modal({ showModal, setShowModal, children }) {
+import { useNavigate } from "react-router-dom";
+export default function Modal({ showModal, setShowModal, children, redirect }) {
+  const navigate = useNavigate();
+
   const closeModal = () => {
     setShowModal(false);
+    navigate(redirect);
   };
 
   return (

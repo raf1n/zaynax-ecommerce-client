@@ -22,13 +22,11 @@ const OrderSummary = ({ carts, setTotalPrice }) => {
   const [shippingCharge, setShippingCharge] = useState(100);
 
   const [inputFocused, setInputFocused] = useState(false);
-  const [couponDiscount, setCouponDiscount] = useState(0); // State to store the discount amount
+
+  const [couponDiscount, setCouponDiscount] = useState(0);
   const navigate = useNavigate();
 
-  const [validatePromoCode, { isLoading, isError, data }] =
-    useValidatePromoCodeMutation(); // Use the mutation hook
-
-  console.log(data);
+  const [validatePromoCode, { data }] = useValidatePromoCodeMutation(); // Use the mutation hook
 
   const handleInputFocus = () => {
     if (!isLoggedIn) {
@@ -42,7 +40,7 @@ const OrderSummary = ({ carts, setTotalPrice }) => {
     if (!promoCode) {
       return;
     }
-    await validatePromoCode({ promoCode }); // Call the mutation with the promo code
+    await validatePromoCode({ promoCode });
   };
 
   const handleRedirectToRegister = () => {
@@ -50,12 +48,18 @@ const OrderSummary = ({ carts, setTotalPrice }) => {
   };
 
   useEffect(() => {
+    if (carts && carts?.length !== 0) {
+      setShippingCharge(100);
+    } else {
+      setShippingCharge(0);
+    }
+
     if (data && data?.data?.valid) {
       setCouponDiscount(data?.data?.promotion?.discount);
     } else {
       setCouponDiscount(0);
     }
-  }, [data]);
+  }, [carts, data]);
 
   const calculatePrice = (price, discount) => {
     return price - (price * discount) / 100;
@@ -68,11 +72,12 @@ const OrderSummary = ({ carts, setTotalPrice }) => {
       subtotal += calculatePrice(cart?.price, cart?.discount) * cart?.quantity;
     });
 
-    subtotal += shippingCharge;
+    // subtotal += shippingCharge;
 
     const couponDiscountAmount = (subtotal * couponDiscount) / 100;
 
     const totalPayable = subtotal - couponDiscountAmount + shippingCharge;
+
     setTotalPrice(totalPayable);
 
     return {
@@ -88,7 +93,7 @@ const OrderSummary = ({ carts, setTotalPrice }) => {
   return (
     <div className="rounded-md border bg-white text-gray-700 font-medium">
       <div className="border-b border-gray-200">
-        <h1 className="text-base text-center my-2">ORDER SUMMARY</h1>
+        <h1 className="text-base text-center my-3">ORDER SUMMARY</h1>
       </div>
 
       <div className="mb-4 border-dashed border-b pb-2">

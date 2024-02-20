@@ -4,9 +4,11 @@ import ProductCard from "../../../Cards/ProductCard";
 const AllProducts = () => {
   const { data, isLoading } = useGetAllProductsQuery({});
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div className=" w-10 mx-auto h-10 border-4 border-primary border-dashed rounded-full animate-spin "></div>
+    );
 
-  console.log(data);
   return (
     <div>
       <div className="grid grid-col-2 md:grid-cols-3 lg:grid-cols-4 gap-y-10">

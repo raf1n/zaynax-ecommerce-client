@@ -39,9 +39,14 @@ const Navbar = () => {
 
   return (
     <nav className="flex justify-between px-4 lg:px-20 py-5 items-center bg-white border-b-2 z-10">
-      <div className="flex items-center">
-        <h1 className="text-xl lg:text-2xl text-gray-800 font-bold">ZayNax</h1>
-      </div>
+      <Link to={"/"} className="flex items-center">
+        <img
+          className="w-8 h-8 pt-1"
+          src="https://media.licdn.com/dms/image/C4E0BAQH8h13JAFsOxA/company-logo_200_200/0/1630639524251/zaynax_logo?e=1716422400&v=beta&t=rBp8VdYaFvLOdyZBaqq88Wu-xliBZ2u38ZTz4w-0MhM"
+          alt=""
+        />
+        <h1 className="text-xl lg:text-2xl text-gray-800 font-bold">ayNax</h1>
+      </Link>
 
       <div className="lg:hidden flex items-center gap-8">
         {!pathname?.includes("dashboard") && (

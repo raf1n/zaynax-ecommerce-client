@@ -7,12 +7,14 @@ import {
   useUpdateProductMutation,
 } from "../../../../feature/product/productApiSlice";
 import Modal from "../../../Shared/Modal";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import { FaCheckCircle } from "react-icons/fa";
 
 const AddProducts = () => {
   const { id } = useParams();
+
+  const navigate = useNavigate();
 
   console.log(id);
 
@@ -126,11 +128,10 @@ const AddProducts = () => {
     }
   };
 
-  setTimeout(() => {
-    setShowModal(false);
-  }, 1500);
-
-  if (getSingleProductLoading) return <div>Loading.....</div>;
+  if (getSingleProductLoading)
+    return (
+      <div className="mt-10 w-10 mx-auto h-10 border-4 border-primary border-dashed rounded-full animate-spin "></div>
+    );
 
   return (
     <div className="min-h-screen w-full bg-gray-100 flex flex-col pt-10 pb-10">
@@ -169,10 +170,12 @@ const AddProducts = () => {
                       <p className="text-md font-medium text-black text-center">
                         Product Image
                       </p>
-                      <p className="text-sm text-black text-center">
+                      <p className="text-sm font-normal text-black text-center">
                         Image Size Must be
                       </p>
-                      <p className="text-sm text-black text-center">500x500</p>
+                      <p className="text-sm font-normal text-black text-center">
+                        500x500
+                      </p>
                     </div>
                   )}
                 </label>
@@ -213,7 +216,7 @@ const AddProducts = () => {
               </div>
               <div className="flex flex-col">
                 <label className="leading-loose text-base font-medium">
-                  Discount Rate
+                  Discount Rate (%)
                 </label>
                 <input
                   {...register("discount")}
@@ -291,7 +294,11 @@ const AddProducts = () => {
           </form>
         </div>
         {updateSuccess ? (
-          <Modal setShowModal={setShowModal} showModal={showModal}>
+          <Modal
+            redirect={"/dashboard/products"}
+            setShowModal={setShowModal}
+            showModal={showModal}
+          >
             <div className="w-full bg-white p-4 flex flex-col items-center px-10 py-4">
               <FaCheckCircle size={30} />
 
@@ -300,7 +307,11 @@ const AddProducts = () => {
             </div>
           </Modal>
         ) : (
-          <Modal setShowModal={setShowModal} showModal={showModal}>
+          <Modal
+            redirect={"/dashboard/products"}
+            setShowModal={setShowModal}
+            showModal={showModal}
+          >
             <div className="w-full bg-white p-4 flex flex-col items-center px-10 py-4">
               <FaCheckCircle size={30} />
 

@@ -109,9 +109,12 @@ const CartItems = () => {
                 <button
                   onClick={handleCheckout}
                   type="submit"
-                  className="bg-primary font-medium w-full text-black px-14 py-2 shadow-md rounded focus:outline-none"
+                  className="bg-primary font-medium w-full text-black px-14 py-2 shadow-md rounded focus:outline-none flex gap-1"
                 >
-                  CHECKOUT
+                  <span>CHECKOUT</span>
+                  {isLoading && (
+                    <div className=" w-6 h-6 border-4 border-white border-dashed rounded-full animate-spin "></div>
+                  )}
                 </button>
               </div>
             </div>

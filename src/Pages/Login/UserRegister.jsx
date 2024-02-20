@@ -14,7 +14,7 @@ const UserRegister = () => {
     formState: { errors },
   } = useForm();
 
-  const [registerUser] = useRegisterUserMutation({});
+  const [registerUser, { isLoading }] = useRegisterUserMutation({});
 
   const onSubmit = async (data) => {
     const result = await registerUser({ bodyData: data });
@@ -63,6 +63,9 @@ const UserRegister = () => {
               <div className="pt-4 flex items-center space-x-4">
                 <button className="bg-primary font-medium  flex justify-center items-center w-full text-black px-4 py-3 mx-16  rounded-3xl focus:outline-none">
                   Sign up
+                  {isLoading && (
+                    <div className=" w-6 h-6 border-4 border-white border-dashed rounded-full animate-spin "></div>
+                  )}
                 </button>
               </div>
             </form>
