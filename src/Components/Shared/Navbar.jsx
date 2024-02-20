@@ -6,12 +6,16 @@ import { AiOutlineMenu } from "react-icons/ai";
 import { useSelector, useDispatch } from "react-redux";
 import { userLoggedOut } from "../../feature/auth/authSlice";
 import { setSearchString } from "../../feature/search/searchSlice";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Navbar = () => {
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.auth.user);
+
+  const { pathname } = useLocation();
+
+  console.log(location);
 
   console.log(user);
 
@@ -40,7 +44,7 @@ const Navbar = () => {
       </div>
 
       <div className="lg:hidden flex items-center gap-8">
-        {!user?.user_id && (
+        {!pathname?.includes("dashboard") && (
           <div className="flex items-center border-b-2">
             <CiSearch size={20} className="text-gray-500" />
             <input
@@ -97,7 +101,7 @@ const Navbar = () => {
 
       {/* Regular navigation for larger screens */}
 
-      {!user?.user_id && (
+      {!pathname?.includes("dashboard") && (
         <div className="lg:flex ml-64 hidden border-b-2 w-1/3 items-center">
           <CiSearch size={22} className="text-gray-500" />
           <input

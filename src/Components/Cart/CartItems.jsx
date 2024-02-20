@@ -6,10 +6,13 @@ import { Link } from "react-router-dom";
 import { useCreateOrderMutation } from "../../feature/order/orderApiSlice";
 import Modal from "../Shared/Modal";
 import { FaCheckCircle } from "react-icons/fa";
+import useAuth from "../../hooks/useAuth";
 
 const CartItems = () => {
   const carts = useSelector((state) => state.cart?.cart);
   const user = useSelector((state) => state.auth?.user);
+
+  const isLoggedIn = useAuth();
 
   const [createOrder, { isLoading }] = useCreateOrderMutation({});
 
@@ -33,6 +36,8 @@ const CartItems = () => {
     if (!checked) {
       setError(true);
       setBorderColor("border-red-500");
+    } else if (!isLoggedIn) {
+      setModal(true);
     } else {
       const transformProducts = (products) => {
         return products.map((product) => ({
@@ -119,20 +124,27 @@ const CartItems = () => {
       </div>
 
       <Modal setShowModal={setModal} showModal={modal}>
-        <div className="w-full bg-white p-4 flex flex-col items-center px-10 py-4">
-          <FaCheckCircle size={30} />
-
-          <p className="text-lg mt-5 text-gray-500">Your Order Placed</p>
-          <p className="text-lg text-gray-500">successfully </p>
-          <div className="inline-block mr-5 mt-4">
-            <Link
-              to={"/dashboard"}
-              className="bg-primary font-medium w-full text-black px-10 py-2 shadow-md rounded-full focus:outline-none"
-            >
-              Go to Admin Panel
-            </Link>
+        {!isLoggedIn ? (
+          <div className="w-full bg-white p-4 flex flex-col items-center px-10 py-4">
+            <p className="text-lg mt-5 text-gray-500">Please Sign up to</p>
+            <p className="text-lg text-gray-500">Checkout</p>
           </div>
-        </div>
+        ) : (
+          <div className="w-full bg-white p-4 flex flex-col items-center px-10 py-4">
+            <FaCheckCircle size={30} />
+
+            <p className="text-lg mt-5 text-gray-500">Your Order Placed</p>
+            <p className="text-lg text-gray-500">successfully </p>
+            <div className="inline-block mr-5 mt-4">
+              <Link
+                to={"/dashboard"}
+                className="bg-primary font-medium w-full text-black px-10 py-2 shadow-md rounded-full focus:outline-none"
+              >
+                Go to Admin Panel
+              </Link>
+            </div>
+          </div>
+        )}
       </Modal>
     </div>
   );
