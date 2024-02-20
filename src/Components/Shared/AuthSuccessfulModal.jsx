@@ -10,7 +10,7 @@ export default function AuthSuccessfulModal({
 
   const closeModal = () => {
     setShowModal(false);
-    console.log(location.state);
+    // console.log(location.state);
 
     setShowModal(false);
 

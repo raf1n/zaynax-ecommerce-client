@@ -15,13 +15,13 @@ const Navbar = () => {
 
   const { pathname } = useLocation();
 
-  console.log(location);
+  // console.log(location);
 
-  console.log(user);
+  // console.log(user);
 
   const cart = useSelector((state) => state.cart?.cart);
 
-  console.log(cart);
+  // console.log(cart);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 

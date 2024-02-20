@@ -20,14 +20,14 @@ const OrderTable = ({ selectedStatus }) => {
 
   const [updateOrder] = useUpdateOrderMutation({});
 
-  console.log(data);
+  // console.log(data);
 
   const handleUpdateStatus = async (status, orderId) => {
-    console.log(status);
+    // console.log(status);
 
-    const result = await updateOrder({ formData: { status }, orderId });
+    await updateOrder({ formData: { status }, orderId });
 
-    console.log(result);
+    // console.log(result);
   };
   if (isLoading)
     return (

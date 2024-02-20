@@ -4,7 +4,7 @@ import PromotionCard from "../../../Cards/PromotionCard";
 const AllPromotions = () => {
   const { data, isLoading } = useGetAllPromotionQuery({});
 
-  console.log(data);
+  // console.log(data);
 
   if (isLoading)
     return (

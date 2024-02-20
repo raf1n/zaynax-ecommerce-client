@@ -17,7 +17,7 @@ const AddProducts = () => {
 
   const navigate = useNavigate();
 
-  console.log(id);
+  // console.log(id);
 
   const [imagePreview, setImagePreview] = useState(null);
   const [imageFile, setImageFile] = useState(null);
@@ -29,7 +29,7 @@ const AddProducts = () => {
   const { data, isLoading: getSingleProductLoading } = useGetSingleProductQuery(
     { productId: id }
   );
-  console.log(data);
+  // console.log(data);
 
   useEffect(() => {
     if (data) {
@@ -61,7 +61,7 @@ const AddProducts = () => {
   } = useForm();
 
   const [addProduct, { isLoading }] = useAddProductMutation({});
-  console.log("product", data?.data);
+  // console.log("product", data?.data);
 
   const [deleteProduct, { isLoading: deleteLoading }] =
     useDeleteProductMutation({});

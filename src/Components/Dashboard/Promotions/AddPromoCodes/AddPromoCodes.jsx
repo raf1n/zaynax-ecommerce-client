@@ -19,13 +19,13 @@ const AddPromoCodes = () => {
 
   const navigate = useNavigate();
 
-  console.log(id);
+  // console.log(id);
 
   const { data, isLoading: getLoading } = useGetSinglePromotionQuery({
     promotionId: id,
   });
 
-  console.log(data);
+  // console.log(data);
 
   const [showModal, setShowModal] = useState(false);
 
@@ -60,7 +60,7 @@ const AddPromoCodes = () => {
     useDeletePromotionMutation();
 
   const onUpdate = async (data) => {
-    console.log(data);
+    // console.log(data);
 
     const formData = {
       status: status === true ? "active" : "deactive",
@@ -69,7 +69,7 @@ const AddPromoCodes = () => {
 
     const result = await updatePromotion({ formData, promotionId: id });
 
-    console.log(result);
+    // console.log(result);
 
     if (result.data?.success) {
       setShowModal(true);
@@ -77,7 +77,7 @@ const AddPromoCodes = () => {
   };
 
   const onSubmit = async (data) => {
-    console.log(data);
+    // console.log(data);
 
     const formData = {
       status: status === true ? "active" : "deactive",
@@ -86,7 +86,7 @@ const AddPromoCodes = () => {
 
     const result = await addPromotion({ formData });
 
-    console.log(result);
+    // console.log(result);
 
     if (result.data?.success) {
       setShowModal(true);
