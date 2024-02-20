@@ -8,6 +8,6 @@ export const apiSlice = createApi({
     baseUrl: BaseURL,
     // credentials: "include",
   }),
-  tagTypes: ["User", "Product"],
+  tagTypes: ["User", "Product", "Order", "Promotion"],
   endpoints: () => ({}),
 });

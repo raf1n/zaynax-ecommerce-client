@@ -1,15 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { useParams } from "react-router-dom";
 
 import { FaCheckCircle } from "react-icons/fa";
 import ToggleButton from "../../../Shared/ToggleButton";
+import {
+  useAddPromotionMutation,
+  useGetSinglePromotionQuery,
+  useUpdatePromotionMutation,
+} from "../../../../feature/promotion/promotionApiSlice";
+import Modal from "../../../Shared/Modal";
+import moment from "moment";
 
 const AddPromoCodes = () => {
   const { id } = useParams();
 
   console.log(id);
+
+  const { data, isLoading: getLoading } = useGetSinglePromotionQuery({
+    promotionId: id,
+  });
+
+  console.log(data);
 
   const [showModal, setShowModal] = useState(false);
 
@@ -19,66 +32,66 @@ const AddPromoCodes = () => {
     setStatus(value);
   };
 
+  useEffect(() => {
+    if (data?.data?.status === "active") {
+      setStatus(true);
+    } else {
+      setStatus(false);
+    }
+  }, [data]);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const data = {};
+  const [addPromotion, { isLoading }] = useAddPromotionMutation({});
+
+  const [
+    updatePromotion,
+    { isLoading: updateLoading, isSuccess: updateSuccess },
+  ] = useUpdatePromotionMutation({});
 
   const onUpdate = async (data) => {
-    // const formData = new FormData();
-    // if (data?.productName !== data?.data?.name) {
-    //   formData.append("name", data?.productName);
-    // }
-    // if (data?.price !== data?.data?.price) {
-    //   formData.append("price", data?.price);
-    // }
-    // if (data?.discount !== data?.data?.discount) {
-    //   formData.append("discount", data?.discount);
-    // }
-    // if (data?.shipping !== data?.data?.shippingCharge) {
-    //   formData.append("shippingCharge", data?.shipping);
-    // }
-    // if (data?.color !== data?.data?.color) {
-    //   formData.append("color", data?.color);
-    // }
-    // if (data?.size !== data?.data?.size) {
-    //   formData.append("size", data?.size);
-    // }
-    // if (status !== (data?.data?.status === "active" ? true : false)) {
-    //   formData.append("status", status === true ? "active" : "inactive");
-    // }
-    // if (imageFile) {
-    //   formData.append("image", imageFile);
-    // }
-    // const result = await updateProduct({ formData, productId: id });
-    // if (result.data?.success) {
-    //   setShowModal(true);
-    // }
+    console.log(data);
+
+    const formData = {
+      status: status === true ? "active" : "deactive",
+      ...data,
+    };
+
+    const result = await updatePromotion({ formData, promotionId: id });
+
+    console.log(result);
+
+    if (result.data?.success) {
+      setShowModal(true);
+    }
   };
 
   const onSubmit = async (data) => {
-    // const formData = new FormData();
-    // formData.append("name", data?.productName);
-    // formData.append("price", data?.price);
-    // formData.append("discount", data?.discount);
-    // formData.append("shippingCharge", data?.shipping);
-    // formData.append("color", data?.color);
-    // formData.append("size", data?.size);
-    // formData.append("status", status === true ? "active" : "inactive");
-    // formData.append("image", imageFile);
-    // formData.append("productName", data?.productName);
-    // const result = await addProduct({ formData });
-    // if (result.data?.success) {
-    //   setShowModal(true);
-    // }
+    console.log(data);
+
+    const formData = {
+      status: status === true ? "active" : "deactive",
+      ...data,
+    };
+
+    const result = await addPromotion({ formData });
+
+    console.log(result);
+
+    if (result.data?.success) {
+      setShowModal(true);
+    }
   };
 
   setTimeout(() => {
     setShowModal(false);
   }, 1500);
+
+  if (getLoading) return <div>Loading...</div>;
 
   return (
     <div className="min-h-screen w-full bg-gray-100 flex flex-col pt-10 pb-10">
@@ -94,13 +107,13 @@ const AddPromoCodes = () => {
                   Promo Code
                 </label>
                 <input
-                  {...register("code", { required: "This is required" })}
-                  defaultValue={data?.data?.code}
+                  {...register("promoCode", { required: "This is required" })}
+                  defaultValue={data?.data?.promoCode}
                   type="text"
                   className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full lg:text-base  sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-700"
                   placeholder=""
                 />
-                {errors.code && (
+                {errors.promoCode && (
                   <span className="text-red-600 text-sm mt-1">
                     This field is required
                   </span>
@@ -112,7 +125,11 @@ const AddPromoCodes = () => {
                 </label>
                 <input
                   {...register("startDate", { required: "This is required" })}
-                  defaultValue={data?.data?.startDate}
+                  defaultValue={
+                    data?.data?.startDate
+                      ? moment(data?.data?.startDate).format("YYYY-MM-DD")
+                      : ""
+                  }
                   type="date"
                   className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full lg:text-base sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
                   placeholder=""
@@ -129,7 +146,11 @@ const AddPromoCodes = () => {
                 </label>
                 <input
                   {...register("endDate", { required: "This is required" })}
-                  defaultValue={data?.data?.endDate}
+                  defaultValue={
+                    data?.data?.endDate
+                      ? moment(data?.data?.endDate).format("YYYY-MM-DD")
+                      : ""
+                  }
                   type="date"
                   className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full lg:text-base sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
                   placeholder=""
@@ -145,13 +166,13 @@ const AddPromoCodes = () => {
                   Discount Rate
                 </label>
                 <input
-                  {...register("rate", { required: "This is required" })}
-                  defaultValue={data?.data?.rate}
+                  {...register("discount", { required: "This is required" })}
+                  defaultValue={data?.data?.discount}
                   type="text"
                   className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full lg:text-base sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
                   placeholder=""
                 />
-                {errors.rate && (
+                {errors.discount && (
                   <span className="text-red-600 text-sm mt-1">
                     This field is required
                   </span>
@@ -174,29 +195,30 @@ const AddPromoCodes = () => {
               <p className="text-base font-medium"> Active</p>
               <ToggleButton handleToggle={handleToggle} status={status} />
             </div>
-            {/* <div className="pt-6 flex items-center space-x-4">
+            <div className="pt-6 flex items-center space-x-4">
               <button
                 disabled={isLoading || updateLoading}
                 type="submit"
-                className={`bg-primary font-medium gap-2 flex justify-center items-center w-full text-black px-4 py-3  rounded-3xl focus:outline-none ${
-                  id ? "mx-10" : "mx-16 "
+                className={`bg-primary font-medium text-sm gap-2 flex justify-center items-center w-full text-black px-4 py-3  rounded-3xl focus:outline-none ${
+                  id ? "mx-6" : "mx-6 "
                 }`}
               >
-                {id ? "Update" : "Add"} Product
-                {isLoading ||
-                  (updateLoading && (
-                    <div className=" w-6 h-6 border-4 border-white border-dashed rounded-full animate-spin "></div>
-                  ))}
+                {id ? "Update" : "Add"} Promo Code
+                {(isLoading || updateLoading) && (
+                  <div className=" w-6 h-6 border-4 border-white border-dashed rounded-full animate-spin "></div>
+                )}
               </button>
-            </div> */}
+            </div>
           </form>
         </div>
-        {/* {updateSuccess ? (
+        {updateSuccess ? (
           <Modal setShowModal={setShowModal} showModal={showModal}>
             <div className="w-full bg-white p-4 flex flex-col items-center px-10 py-4">
               <FaCheckCircle size={30} />
 
-              <p className="text-lg mt-5 text-gray-500">Your Product Updated</p>
+              <p className="text-lg mt-5 text-gray-500">
+                Your Promotion Updated
+              </p>
               <p className="text-lg text-gray-500">successfully </p>
             </div>
           </Modal>
@@ -205,11 +227,11 @@ const AddPromoCodes = () => {
             <div className="w-full bg-white p-4 flex flex-col items-center px-10 py-4">
               <FaCheckCircle size={30} />
 
-              <p className="text-lg mt-5 text-gray-500">Your Product added</p>
+              <p className="text-lg mt-5 text-gray-500">Your Promotion added</p>
               <p className="text-lg text-gray-500">successfully </p>
             </div>
           </Modal>
-        )} */}
+        )}
       </div>
     </div>
   );

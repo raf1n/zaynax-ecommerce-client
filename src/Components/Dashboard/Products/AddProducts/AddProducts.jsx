@@ -283,10 +283,9 @@ const AddProducts = () => {
                 }`}
               >
                 {id ? "Update" : "Add"} Product
-                {isLoading ||
-                  (updateLoading && (
-                    <div className=" w-6 h-6 border-4 border-white border-dashed rounded-full animate-spin "></div>
-                  ))}
+                {(isLoading || updateLoading) && (
+                  <div className=" w-6 h-6 border-4 border-white border-dashed rounded-full animate-spin "></div>
+                )}
               </button>
             </div>
           </form>
