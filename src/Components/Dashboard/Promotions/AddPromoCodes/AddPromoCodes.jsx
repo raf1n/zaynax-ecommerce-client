@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import { FaCheckCircle } from "react-icons/fa";
 import ToggleButton from "../../../Shared/ToggleButton";
 import {
   useAddPromotionMutation,
+  useDeletePromotionMutation,
   useGetSinglePromotionQuery,
   useUpdatePromotionMutation,
 } from "../../../../feature/promotion/promotionApiSlice";
@@ -15,6 +16,8 @@ import moment from "moment";
 
 const AddPromoCodes = () => {
   const { id } = useParams();
+
+  const navigate = useNavigate();
 
   console.log(id);
 
@@ -53,6 +56,9 @@ const AddPromoCodes = () => {
     { isLoading: updateLoading, isSuccess: updateSuccess },
   ] = useUpdatePromotionMutation({});
 
+  const [deletePromotion, { isLoading: deleteLoading }] =
+    useDeletePromotionMutation();
+
   const onUpdate = async (data) => {
     console.log(data);
 
@@ -87,11 +93,18 @@ const AddPromoCodes = () => {
     }
   };
 
-  setTimeout(() => {
-    setShowModal(false);
-  }, 1500);
+  const handleDeletePromotion = async () => {
+    const result = await deletePromotion({ promotionId: id });
 
-  if (getLoading) return <div>Loading...</div>;
+    if (result.data?.success) {
+      navigate("/dashboard/promotion/codes");
+    }
+  };
+
+  if (getLoading)
+    return (
+      <div className="mt-10 w-10 mx-auto h-10 border-4 border-primary border-dashed rounded-full animate-spin "></div>
+    );
 
   return (
     <div className="min-h-screen w-full bg-gray-100 flex flex-col pt-10 pb-10">
@@ -107,6 +120,7 @@ const AddPromoCodes = () => {
                   Promo Code
                 </label>
                 <input
+                  readOnly={id ? true : false}
                   {...register("promoCode", { required: "This is required" })}
                   defaultValue={data?.data?.promoCode}
                   type="text"
@@ -124,6 +138,7 @@ const AddPromoCodes = () => {
                   Start Date
                 </label>
                 <input
+                  readOnly={id ? true : false}
                   {...register("startDate", { required: "This is required" })}
                   defaultValue={
                     data?.data?.startDate
@@ -183,36 +198,58 @@ const AddPromoCodes = () => {
                   Use Time
                 </label>
                 <input
-                  {...register("useTime")}
+                  {...register("useTime", { required: "This is required" })}
                   defaultValue={data?.data?.useTime}
                   type="text"
                   className="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full lg:text-base sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
                   placeholder=""
                 />
+                {errors.useTime && (
+                  <span className="text-red-600 text-sm mt-1">
+                    This field is required
+                  </span>
+                )}
               </div>
             </div>
             <div className="mt-6 flex justify-between items-center">
               <p className="text-base font-medium"> Active</p>
               <ToggleButton handleToggle={handleToggle} status={status} />
             </div>
-            <div className="pt-6 flex items-center space-x-4">
+            <div className="pt-6 flex items-center space-x-2">
               <button
                 disabled={isLoading || updateLoading}
                 type="submit"
-                className={`bg-primary font-medium text-sm gap-2 flex justify-center items-center w-full text-black px-4 py-3  rounded-3xl focus:outline-none ${
-                  id ? "mx-6" : "mx-6 "
+                className={`bg-primary font-medium text-sm gap-2 flex justify-center items-center w-full text-black px-1 py-3  rounded-3xl focus:outline-none ${
+                  id ? "mx-6" : "mx-20"
                 }`}
               >
-                {id ? "Update" : "Add"} Promo Code
+                {id ? "Update" : "Add"}
                 {(isLoading || updateLoading) && (
                   <div className=" w-6 h-6 border-4 border-white border-dashed rounded-full animate-spin "></div>
                 )}
               </button>
+              {id && (
+                <button
+                  onClick={handleDeletePromotion}
+                  disabled={deleteLoading}
+                  type="button"
+                  className={`bg-red-400 font-medium text-sm gap-2 flex justify-center items-center w-full text-white px-4 py-3  rounded-3xl focus:outline-none mx-6`}
+                >
+                  Delete
+                  {deleteLoading && (
+                    <div className=" w-6 h-6 border-4 border-white border-dashed rounded-full animate-spin "></div>
+                  )}
+                </button>
+              )}
             </div>
           </form>
         </div>
         {updateSuccess ? (
-          <Modal setShowModal={setShowModal} showModal={showModal}>
+          <Modal
+            redirect={"/dashboard/promotion/codes"}
+            setShowModal={setShowModal}
+            showModal={showModal}
+          >
             <div className="w-full bg-white p-4 flex flex-col items-center px-10 py-4">
               <FaCheckCircle size={30} />
 
@@ -223,7 +260,11 @@ const AddPromoCodes = () => {
             </div>
           </Modal>
         ) : (
-          <Modal setShowModal={setShowModal} showModal={showModal}>
+          <Modal
+            redirect={"/dashboard/promotion/codes"}
+            setShowModal={setShowModal}
+            showModal={showModal}
+          >
             <div className="w-full bg-white p-4 flex flex-col items-center px-10 py-4">
               <FaCheckCircle size={30} />
 

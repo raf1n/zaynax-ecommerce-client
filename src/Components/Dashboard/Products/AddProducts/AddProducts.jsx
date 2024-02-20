@@ -3,16 +3,19 @@ import { useForm } from "react-hook-form";
 import ToggleButton from "../../../Shared/ToggleButton";
 import {
   useAddProductMutation,
+  useDeleteProductMutation,
   useGetSingleProductQuery,
   useUpdateProductMutation,
 } from "../../../../feature/product/productApiSlice";
 import Modal from "../../../Shared/Modal";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import { FaCheckCircle } from "react-icons/fa";
 
 const AddProducts = () => {
   const { id } = useParams();
+
+  const navigate = useNavigate();
 
   console.log(id);
 
@@ -60,6 +63,9 @@ const AddProducts = () => {
   const [addProduct, { isLoading }] = useAddProductMutation({});
   console.log("product", data?.data);
 
+  const [deleteProduct, { isLoading: deleteLoading }] =
+    useDeleteProductMutation({});
+
   const [
     updateProduct,
     { isLoading: updateLoading, isSuccess: updateSuccess },
@@ -91,9 +97,7 @@ const AddProducts = () => {
       formData.append("size", data?.size);
     }
 
-    if (status !== (data?.data?.status === "active" ? true : false)) {
-      formData.append("status", status === true ? "active" : "inactive");
-    }
+    formData.append("status", status === true ? "active" : "inactive");
 
     if (imageFile) {
       formData.append("image", imageFile);
@@ -123,6 +127,14 @@ const AddProducts = () => {
 
     if (result.data?.success) {
       setShowModal(true);
+    }
+  };
+
+  const handleDelete = async () => {
+    const result = await deleteProduct({ productId: id });
+
+    if (result.data?.success) {
+      navigate("/dashboard/products");
     }
   };
 
@@ -279,15 +291,30 @@ const AddProducts = () => {
               <button
                 disabled={isLoading || updateLoading}
                 type="submit"
-                className={`bg-primary font-medium gap-2 flex justify-center items-center w-full text-black px-4 py-3  rounded-3xl focus:outline-none ${
-                  id ? "mx-10" : "mx-16 "
+                className={`bg-primary font-medium gap-2 flex justify-center items-center w-full text-black px-4 py-2  rounded-3xl focus:outline-none ${
+                  id ? "mx-4" : "mx-16 "
                 }`}
               >
-                {id ? "Update" : "Add"} Product
+                {id ? "Update" : "Add"}
                 {(isLoading || updateLoading) && (
                   <div className=" w-6 h-6 border-4 border-white border-dashed rounded-full animate-spin "></div>
                 )}
               </button>
+              {id && (
+                <button
+                  onClick={handleDelete}
+                  disabled={deleteLoading}
+                  type="submit"
+                  className={`bg-red-400 font-medium gap-2 flex justify-center items-center w-full text-white px-4 py-2  rounded-3xl focus:outline-none ${
+                    id ? "mx-4" : "mx-16 "
+                  }`}
+                >
+                  Delete
+                  {deleteLoading && (
+                    <div className=" w-6 h-6 border-4 border-white border-dashed rounded-full animate-spin "></div>
+                  )}
+                </button>
+              )}
             </div>
           </form>
         </div>

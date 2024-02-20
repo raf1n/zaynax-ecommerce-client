@@ -52,6 +52,18 @@ export const promotionApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: ["Promotion"],
     }),
 
+    deletePromotion: builder.mutation({
+      query: (data) => {
+        const { promotionId } = data;
+        return {
+          url: `/promotion/${promotionId}`,
+          method: "DELETE",
+        };
+      },
+
+      invalidatesTags: ["Promotion"],
+    }),
+
     validatePromoCode: builder.mutation({
       query: (data) => {
         const { promoCode } = data;
@@ -76,4 +88,5 @@ export const {
   useGetSinglePromotionQuery,
   useUpdatePromotionMutation,
   useValidatePromoCodeMutation,
+  useDeletePromotionMutation,
 } = promotionApiSlice;
