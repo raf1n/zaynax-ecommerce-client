@@ -7,14 +7,12 @@ import {
   useUpdateProductMutation,
 } from "../../../../feature/product/productApiSlice";
 import Modal from "../../../Shared/Modal";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import { FaCheckCircle } from "react-icons/fa";
 
 const AddProducts = () => {
   const { id } = useParams();
-
-  const navigate = useNavigate();
 
   console.log(id);
 
