@@ -3,11 +3,11 @@ import { userLoggedIn } from "./authSlice";
 
 export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    loginUser: builder.mutation({
+    registerUser: builder.mutation({
       query: (data) => {
         const { bodyData } = data;
         return {
-          url: `/auth/login`,
+          url: `/auth/register`,
           method: "POST",
           headers: {
             "Content-Type": "application/json;charset=UTF-8",
@@ -21,13 +21,14 @@ export const authApiSlice = apiSlice.injectEndpoints({
           localStorage.setItem(
             "auth",
             JSON.stringify({
-              access_token: result?.data?.data?.accessToken,
+              // access_token: result?.data?.data?.accessToken,
+              isLoggedIn: true,
               user: result?.data?.data?.user,
             })
           );
           dispatch(
             userLoggedIn({
-              access_token: result?.data?.data?.accessToken,
+              isLoggedIn: true,
               user: result.data?.data?.user,
             })
           );
@@ -57,12 +58,14 @@ export const authApiSlice = apiSlice.injectEndpoints({
             "auth",
             JSON.stringify({
               // access_token: result?.data?.data?.accessToken,
+              isLoggedIn: true,
               user: result?.data?.data?.user,
             })
           );
           dispatch(
             userLoggedIn({
               // access_token: result?.data?.data?.accessToken,
+              isLoggedIn: true,
               user: result?.data?.data?.user,
             })
           );
@@ -75,4 +78,5 @@ export const authApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useLoginUserMutation, useAdminUserLoginMutation } = authApiSlice;
+export const { useRegisterUserMutation, useAdminUserLoginMutation } =
+  authApiSlice;

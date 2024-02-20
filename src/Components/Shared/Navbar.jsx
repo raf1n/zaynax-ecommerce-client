@@ -6,11 +6,14 @@ import { AiOutlineMenu } from "react-icons/ai";
 import { useSelector, useDispatch } from "react-redux";
 import { userLoggedOut } from "../../feature/auth/authSlice";
 import { setSearchString } from "../../feature/search/searchSlice";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.auth.user);
+
+  console.log(user);
 
   const cart = useSelector((state) => state.cart?.cart);
 
@@ -62,13 +65,13 @@ const Navbar = () => {
         <div className="lg:hidden z-10 absolute w-1/3 right-2 top-14 bg-white border rounded-md shadow-md py-2">
           <div className="flex flex-col items-center space-y-2">
             {!user?.user_id && (
-              <div className="flex items-center">
+              <Link to={"/cart"} className="flex items-center">
                 <RiShoppingCartLine size={20} className="text-gray-500" />
                 <p className="ml-1">Cart</p>
                 <div className="px-1.5 rounded-full bg-yellow-300 block text-sm">
                   {cart?.length}
                 </div>
-              </div>
+              </Link>
             )}
             <div className="flex items-center">
               <GoPerson size={20} className="text-gray-500" />
@@ -111,13 +114,15 @@ const Navbar = () => {
       <div className="hidden lg:flex items-center space-x-6">
         <ul className="flex items-center space-x-6 lg:ml-auto">
           {!user?.user_id && (
-            <li className="font-semibold flex items-center justify-center gap-1 text-gray-700">
-              <RiShoppingCartLine size={23} />
-              <p>Cart</p>
-              <div className="px-1.5 rounded-full bg-yellow-300 block text-sm">
-                {cart?.length}
-              </div>
-            </li>
+            <Link to={"/cart"}>
+              <li className="font-semibold flex items-center justify-center gap-1 text-gray-700">
+                <RiShoppingCartLine size={23} />
+                <p>Cart</p>
+                <div className="px-1.5 rounded-full bg-yellow-300 block text-sm">
+                  {cart?.length}
+                </div>
+              </li>
+            </Link>
           )}
           <li className="font-semibold text-gray-700 flex items-center gap-1">
             <GoPerson size={25} />

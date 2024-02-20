@@ -51,6 +51,22 @@ export const promotionApiSlice = apiSlice.injectEndpoints({
 
       invalidatesTags: ["Promotion"],
     }),
+
+    validatePromoCode: builder.mutation({
+      query: (data) => {
+        const { promoCode } = data;
+        return {
+          url: `/promotion/validate`,
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: { promoCode },
+        };
+      },
+
+      invalidatesTags: ["Promotion"],
+    }),
   }),
 });
 
@@ -59,4 +75,5 @@ export const {
   useGetAllPromotionQuery,
   useGetSinglePromotionQuery,
   useUpdatePromotionMutation,
+  useValidatePromoCodeMutation,
 } = promotionApiSlice;

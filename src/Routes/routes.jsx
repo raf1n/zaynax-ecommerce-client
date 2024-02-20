@@ -9,6 +9,8 @@ import AddPromoCodes from "../Components/Dashboard/Promotions/AddPromoCodes/AddP
 import Promotions from "../Components/Dashboard/Promotions/Promotions";
 import Orders from "../Components/Dashboard/Orders/Orders";
 import Homepage from "../Pages/Homepage/Homepage";
+import Cart from "../Pages/Cart/Cart";
+import UserRegister from "../Pages/Login/UserRegister";
 
 export const router = createBrowserRouter([
   {
@@ -16,11 +18,21 @@ export const router = createBrowserRouter([
     element: <Main></Main>,
     errorElement: <div>error</div>,
 
-    children: [{ path: "/", element: <Homepage /> }],
+    children: [
+      { path: "/", element: <Homepage /> },
+      {
+        path: "/cart",
+        element: <Cart />,
+      },
+    ],
   },
   {
     path: "/admin-login",
     element: <AdminLogin />,
+  },
+  {
+    path: "/register",
+    element: <UserRegister />,
   },
   {
     path: "/dashboard",

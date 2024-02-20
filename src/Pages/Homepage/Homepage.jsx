@@ -15,7 +15,7 @@ const Homepage = () => {
 
   return (
     <div className="px-10 py-4">
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-y-10">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-2 lg:gap-x-0 gap-y-10">
         {data?.data?.map((product) => (
           <ProductCard key={product?._id} product={product} />
         ))}

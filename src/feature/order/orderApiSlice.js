@@ -2,10 +2,35 @@ import { apiSlice } from "../api/apiSlice";
 
 export const orderApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getAllOrders: builder.query({
-      query: () => {
+    createOrder: builder.mutation({
+      query: (data) => {
+        const { formData } = data;
         return {
           url: `/order`,
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: formData,
+        };
+      },
+
+      invalidatesTags: ["Order"],
+    }),
+
+    getAllOrders: builder.query({
+      query: ({ status }) => {
+        let url = "/order";
+
+        const queryParams = new URLSearchParams();
+
+        if (status) {
+          queryParams.append("status", status);
+        }
+        url += `?${queryParams.toString()}`;
+
+        return {
+          url,
           method: "GET",
         };
       },
@@ -14,9 +39,9 @@ export const orderApiSlice = apiSlice.injectEndpoints({
 
     updateOrder: builder.mutation({
       query: (data) => {
-        const { formData, productId } = data;
+        const { formData, orderId } = data;
         return {
-          url: `/order/${productId}`,
+          url: `/order/${orderId}`,
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
@@ -30,4 +55,8 @@ export const orderApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetAllOrdersQuery, useUpdateOrderMutation } = orderApiSlice;
+export const {
+  useGetAllOrdersQuery,
+  useUpdateOrderMutation,
+  useCreateOrderMutation,
+} = orderApiSlice;

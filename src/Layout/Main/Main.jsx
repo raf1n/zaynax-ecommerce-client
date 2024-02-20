@@ -5,7 +5,9 @@ const Main = () => {
   return (
     <div>
       <Navbar />
-      <Outlet></Outlet>
+      <div className=" bg-gray-50 h-[89vh]">
+        <Outlet></Outlet>
+      </div>
     </div>
   );
 };

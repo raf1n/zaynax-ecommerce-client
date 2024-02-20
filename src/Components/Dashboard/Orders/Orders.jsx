@@ -11,7 +11,7 @@ const Orders = () => {
         selectedStatus={selectedStatus}
         setSelectedStatus={setSelectedStatus}
       />
-      <OrderTable />
+      <OrderTable selectedStatus={selectedStatus} />
     </div>
   );
 };

@@ -1,4 +1,37 @@
-const OrderTable = () => {
+import {
+  useGetAllOrdersQuery,
+  useUpdateOrderMutation,
+} from "../../feature/order/orderApiSlice";
+
+const OrderTable = ({ selectedStatus }) => {
+  let status;
+
+  if (selectedStatus === "All") {
+    status = "all";
+  } else if (selectedStatus === "Pending") {
+    status = "pending";
+  } else if (selectedStatus === "Confirmed") {
+    status = "confirmed";
+  } else {
+    status = "cancel";
+  }
+
+  const { data, isLoading } = useGetAllOrdersQuery({ status });
+
+  const [updateOrder] = useUpdateOrderMutation({});
+
+  console.log(data);
+
+  const handleUpdateStatus = async (status, orderId) => {
+    console.log(status);
+
+    const result = await updateOrder({ formData: { status }, orderId });
+
+    console.log(result);
+  };
+
+  if (isLoading) return <div>Loading...</div>;
+
   return (
     <div className="w-full mt-6">
       <div className="">
@@ -16,46 +49,54 @@ const OrderTable = () => {
               </tr>
             </thead>
             <tbody>
-              <tr className=" shadow-sm mb-10 bg-white rounded-md  font-medium">
-                <td className="p-3">1</td>
-                <td className="p-3">Technology</td>
-                <td className="p-3 text-center">200.00$</td>
-                <td className="p-3 text-center space-x-3">
-                  <div className="inline-block">
-                    <button className="bg-primary font-medium w-full text-black px-6 py-1  rounded-3xl focus:outline-none">
-                      Confirm
-                    </button>
-                  </div>
-                  <div className="inline-block">
-                    <button className="bg-red-400 font-medium w-full text-white px-6 py-1  rounded-3xl focus:outline-none">
-                      Cancel
-                    </button>
-                  </div>
-                </td>
-                <td className="p-3 ">
-                  <p>Confirmed</p>
-                </td>
-              </tr>
-              <tr className=" shadow-sm mb-10 bg-white rounded-md  font-medium">
-                <td className="p-3">1</td>
-                <td className="p-3">Technology</td>
-                <td className="p-3 text-center">200.00$</td>
-                <td className="p-3 text-center space-x-3">
-                  <div className="inline-block">
-                    <button className="bg-primary font-medium w-full text-black px-6 py-1  rounded-3xl focus:outline-none">
-                      Confirm
-                    </button>
-                  </div>
-                  <div className="inline-block">
-                    <button className="bg-red-400 font-medium w-full text-white px-6 py-1  rounded-3xl focus:outline-none">
-                      Cancel
-                    </button>
-                  </div>
-                </td>
-                <td className="p-3 ">
-                  <p>Confirmed</p>
-                </td>
-              </tr>
+              {data?.data?.map((order, index) => (
+                <tr
+                  key={index}
+                  className=" shadow-sm mb-10 bg-white rounded-md  font-medium"
+                >
+                  <td className="p-3">{index + 1}</td>
+                  <td className="p-3">{order?._id?.slice(0, 8)}</td>
+                  <td className="p-3 text-center">
+                    <span className="font-extrabold text-xs">৳ </span>
+                    {order?.totalPrice}
+                  </td>
+                  <td className="p-3 text-center space-x-3">
+                    {order?.status === "pending" && (
+                      <>
+                        <div className="inline-block">
+                          <button
+                            onClick={() =>
+                              handleUpdateStatus("confirmed", order?._id)
+                            }
+                            className="bg-primary font-medium w-full text-black px-6 py-1  rounded-3xl focus:outline-none"
+                          >
+                            Confirm
+                          </button>
+                        </div>
+                        <div className="inline-block">
+                          <button
+                            onClick={() =>
+                              handleUpdateStatus("cancel", order?._id)
+                            }
+                            className="bg-red-400 font-medium w-full text-white px-6 py-1  rounded-3xl focus:outline-none"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </>
+                    )}
+                  </td>
+                  <td className="p-3 ">
+                    <p>
+                      {order?.status === "pending"
+                        ? "Pending"
+                        : order?.status === "confirmed"
+                        ? "Confirmed"
+                        : "Cancelled"}
+                    </p>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
