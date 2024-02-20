@@ -28,6 +28,24 @@ export const productApiSlice = apiSlice.injectEndpoints({
       },
       providesTags: ["Product"],
     }),
+    getAllActiveProducts: builder.query({
+      query: ({ searchTerm }) => {
+        let url = "/product/active";
+
+        const queryParams = new URLSearchParams();
+
+        if (searchTerm) {
+          queryParams.append("search", searchTerm);
+        }
+        url += `?${queryParams.toString()}`;
+
+        return {
+          url,
+          method: "GET",
+        };
+      },
+      providesTags: ["Product"],
+    }),
     getSingleProduct: builder.query({
       query: (data) => {
         const { productId } = data;
@@ -63,4 +81,5 @@ export const {
   useGetAllProductsQuery,
   useGetSingleProductQuery,
   useUpdateProductMutation,
+  useGetAllActiveProductsQuery,
 } = productApiSlice;

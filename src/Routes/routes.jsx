@@ -8,6 +8,7 @@ import Products from "../Components/Dashboard/Products/Products";
 import AddPromoCodes from "../Components/Dashboard/Promotions/AddPromoCodes/AddPromoCodes";
 import Promotions from "../Components/Dashboard/Promotions/Promotions";
 import Orders from "../Components/Dashboard/Orders/Orders";
+import Homepage from "../Pages/Homepage/Homepage";
 
 export const router = createBrowserRouter([
   {
@@ -15,7 +16,7 @@ export const router = createBrowserRouter([
     element: <Main></Main>,
     errorElement: <div>error</div>,
 
-    children: [{ path: "/", element: <div>main</div> }],
+    children: [{ path: "/", element: <Homepage /> }],
   },
   {
     path: "/admin-login",

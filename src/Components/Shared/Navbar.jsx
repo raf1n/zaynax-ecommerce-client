@@ -3,15 +3,31 @@ import { CiSearch } from "react-icons/ci";
 import { RiShoppingCartLine } from "react-icons/ri";
 import { GoPerson } from "react-icons/go";
 import { AiOutlineMenu } from "react-icons/ai";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { userLoggedOut } from "../../feature/auth/authSlice";
+import { setSearchString } from "../../feature/search/searchSlice";
 
 const Navbar = () => {
+  const dispatch = useDispatch();
+
   const user = useSelector((state) => state.auth.user);
+
+  const cart = useSelector((state) => state.cart?.cart);
+
+  console.log(cart);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleLogOut = () => {
+    dispatch(userLoggedOut());
+  };
+
+  const handleSearchInputChange = (event) => {
+    dispatch(setSearchString(event.target.value));
   };
 
   return (
@@ -25,7 +41,8 @@ const Navbar = () => {
           <div className="flex items-center border-b-2">
             <CiSearch size={20} className="text-gray-500" />
             <input
-              className="ml-1 mb-1 text-base text-gray-400 outline-none bg-transparent"
+              onChange={(e) => handleSearchInputChange(e)}
+              className="ml-1 mb-1 text-base text-gray-600 outline-none bg-transparent"
               type="text"
               name="search"
               id="search"
@@ -42,14 +59,14 @@ const Navbar = () => {
 
       {/* Dropdown menu for mobile and tablet */}
       {isMenuOpen && (
-        <div className="lg:hidden absolute w-1/3 right-2 top-14 bg-white border rounded-md shadow-md py-2">
+        <div className="lg:hidden z-10 absolute w-1/3 right-2 top-14 bg-white border rounded-md shadow-md py-2">
           <div className="flex flex-col items-center space-y-2">
             {!user?.user_id && (
               <div className="flex items-center">
                 <RiShoppingCartLine size={20} className="text-gray-500" />
                 <p className="ml-1">Cart</p>
                 <div className="px-1.5 rounded-full bg-yellow-300 block text-sm">
-                  2
+                  {cart?.length}
                 </div>
               </div>
             )}
@@ -60,6 +77,17 @@ const Navbar = () => {
                 {user?.user_id ? user?.user_id : "Profile"}{" "}
               </p>
             </div>
+            {user && (
+              <div className="inline-block ml-5">
+                <button
+                  onClick={handleLogOut}
+                  type="submit"
+                  className="bg-primary font-medium w-full text-black px-6 py-1 shadow rounded-xl focus:outline-none"
+                >
+                  Log Out
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -70,7 +98,8 @@ const Navbar = () => {
         <div className="lg:flex ml-64 hidden border-b-2 w-1/3 items-center">
           <CiSearch size={22} className="text-gray-500" />
           <input
-            className="ml-1 mb-1 text-base text-gray-400 outline-none bg-transparent"
+            onChange={(e) => handleSearchInputChange(e)}
+            className="ml-1 mb-1 text-base text-gray-600 outline-none bg-transparent"
             type="text"
             name="search"
             id="search"
@@ -86,7 +115,7 @@ const Navbar = () => {
               <RiShoppingCartLine size={23} />
               <p>Cart</p>
               <div className="px-1.5 rounded-full bg-yellow-300 block text-sm">
-                2
+                {cart?.length}
               </div>
             </li>
           )}
@@ -95,6 +124,17 @@ const Navbar = () => {
             <span className="uppercase">{user?.user_id}</span>
           </li>
         </ul>
+        {user && (
+          <div className="inline-block ml-5">
+            <button
+              onClick={handleLogOut}
+              type="submit"
+              className="bg-primary font-medium w-full text-black px-6 py-1 shadow rounded-xl focus:outline-none"
+            >
+              Log Out
+            </button>
+          </div>
+        )}
       </div>
     </nav>
   );
